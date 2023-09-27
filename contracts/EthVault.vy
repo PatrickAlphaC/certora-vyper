@@ -29,11 +29,11 @@ def withdraw(amount_to_withdraw: uint256):
     if (amount_to_withdraw > 100 * (10 ** 18)):
         fee_percentage = 4 
     elif (amount_to_withdraw > 10 * (10 ** 18)):
-        fee_percentage = 3 
+        fee_percentage = 100  # The bug is here 
     elif (amount_to_withdraw > 1 * (10 ** 18)):
         fee_percentage = 2 
     else:
-        fee_percentage = 100  # The bug is here
+        fee_percentage = 1 
     fee: uint256 = current_balance * fee_percentage / 100
     assert current_balance > 0
     assert current_balance >= amount_to_withdraw 
