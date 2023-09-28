@@ -17,6 +17,9 @@ def __init__():
 def deposit():
     self.address_to_amount_deposited[msg.sender] = msg.value
 
+@external
+def getAddressToAmountDeposited() -> uint256:
+    return self.address_to_amount_deposited[msg.sender]
 
 @external
 @payable
@@ -37,8 +40,7 @@ def withdraw(amount_to_withdraw: uint256) -> uint256:
     fee: uint256 = current_balance * fee_percentage / 100
     assert current_balance > 0
     assert current_balance >= amount_to_withdraw
-    final_amount: uint256 = current_balance - amount_to_withdraw
-    self.address_to_amount_deposited[msg.sender] = final_amount
-    send(msg.sender, final_amount)
+    self.address_to_amount_deposited[msg.sender] = current_balance - amount_to_withdraw
+    send(msg.sender, amount_to_withdraw - fee)
     send(self.owner, fee)
-    return final_amount
+    return amount_to_withdraw - fee
